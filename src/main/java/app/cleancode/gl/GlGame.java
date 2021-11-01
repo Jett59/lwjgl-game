@@ -66,7 +66,8 @@ public class GlGame {
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
         // Create the window
-        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Game", NULL, NULL);
+        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Game",
+                glfwGetPrimaryMonitor(), NULL);
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
