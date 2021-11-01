@@ -23,15 +23,14 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL30;
+import app.cleancode.game.Node;
 
 public class GlGame {
     private long window;
@@ -64,8 +63,10 @@ public class GlGame {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
         // Create the window
-        window = glfwCreateWindow(1, 1, "Game", NULL, NULL);
+        window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Game", NULL, NULL);
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
@@ -78,10 +79,6 @@ public class GlGame {
 
         GLFW.glfwSetWindowPos(window, 0, 0);
 
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-        GLFW.glfwSetWindowSize(window, vidmode.width(), vidmode.height());
-
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
 
@@ -92,6 +89,11 @@ public class GlGame {
         GL.createCapabilities();
 
         ShaderProgram shaders = new ShaderProgram();
+        shaders.bind();
+
+        Node triangle =
+                new Node(new float[] {0.0f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f},
+                        GlFaceType.TRIANGLE);
 
         glClearColor(0.5294f, 0.8078f, 0.9216f, 1.0f);
 
@@ -102,11 +104,12 @@ public class GlGame {
             while (!glfwWindowShouldClose(window)) {
                 frameDuration = System.nanoTime() - lastTime;
                 lastTime = System.nanoTime();
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+                GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
+                triangle.render();
                 gameLoopCallback.run();
 
-                glfwSwapBuffers(window); // swap the color buffers
+                glfwSwapBuffers(window);
 
                 glfwPollEvents();
             }
@@ -114,6 +117,7 @@ public class GlGame {
             System.err.println(e.toString());
         }
         System.out.printf("Final fps was %.3f\n", 1000000000d / frameDuration);
+        triangle.cleanup();
         shaders.cleanup();
     }
 }

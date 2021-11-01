@@ -25,6 +25,11 @@ public class ShaderProgram {
         GL30.glDetachShader(program, fragmentShader);
         GL30.glDeleteShader(vertexShader);
         GL30.glDeleteShader(fragmentShader);
+        GL30.glValidateProgram(program);
+        if (GL30.glGetProgrami(program, GL30.GL_VALIDATE_STATUS) == 0) {
+            System.err.println("Warning: while validating shader code:\n"
+                    + GL30.glGetProgramInfoLog(program, 1024));
+        }
     }
 
     private int compileShader(String name, int type) {
