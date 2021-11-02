@@ -92,9 +92,11 @@ public class GlGame {
         ShaderProgram shaders = new ShaderProgram();
         shaders.bind();
 
-        Node triangle =
-                new Node(new float[] {0.0f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f},
-                        GlFaceType.TRIANGLE);
+        Node triangle = new Node(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
+                -0.5f, 0.5f, 0.0f, // vertex 2
+                0.5f, 0.5f, 0.0f, // Vertex 3
+                0.5f, -0.5f, 0.0f // Vertex 4
+        }, new int[] {0, 1, 2, 2, 3, 0});
 
         glClearColor(0.5294f, 0.8078f, 0.9216f, 1.0f);
 
