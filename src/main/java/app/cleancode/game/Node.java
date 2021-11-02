@@ -18,6 +18,7 @@ public class Node {
 
     public void cleanup() {
         glObject.cleanup();
+        transformer.cleanup();
     }
 
     public void setTranslateX(float value) {

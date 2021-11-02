@@ -1,16 +1,20 @@
 package app.cleancode.gl;
 
+import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.system.MemoryUtil;
 
 public class GlTransformer {
     private Matrix4f transformationMatrix;
+    private FloatBuffer matrixBuffer;
     private Vector3f translation;
     private float scale;
     private Vector3f rotation;
 
     public GlTransformer() {
         transformationMatrix = new Matrix4f();
+        matrixBuffer = MemoryUtil.memAllocFloat(16);
         translation = new Vector3f();
         scale = 1f;
         rotation = new Vector3f();
@@ -18,12 +22,11 @@ public class GlTransformer {
     }
 
     private void calculateMatrix() {
-        transformationMatrix.identity();
-        transformationMatrix.translate(translation);
-        transformationMatrix.scale(scale);
+        transformationMatrix.translation(translation);
         transformationMatrix.rotateX((float) Math.toRadians(rotation.x));
         transformationMatrix.rotateY((float) Math.toRadians(rotation.y));
         transformationMatrix.rotateZ((float) Math.toRadians(rotation.z));
+        transformationMatrix.scale(scale);
     }
 
     public void setTranslateX(float value) {
@@ -89,7 +92,11 @@ public class GlTransformer {
         return rotation.z;
     }
 
-    protected Matrix4f getMatrix() {
-        return transformationMatrix;
+    public void cleanup() {
+        MemoryUtil.memFree(matrixBuffer);
+    }
+
+    protected FloatBuffer getMatrix() {
+        return transformationMatrix.get(matrixBuffer);
     }
 }

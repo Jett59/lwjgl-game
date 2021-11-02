@@ -105,10 +105,10 @@ public class GlGame {
         shaders.bind();
         shaders.setUniform("projectionMatrix", projectionMatrix);
 
-        GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, -2.0f, // Vertex 1
-                -0.5f, 0.5f, -2.0f, // vertex 2
-                0.5f, 0.5f, -2.0f, // Vertex 3
-                0.5f, -0.5f, -2.0f // Vertex 4
+        GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
+                -0.5f, 0.5f, 0.0f, // vertex 2
+                0.5f, 0.5f, 0.0f, // Vertex 3
+                0.5f, -0.5f, 0.0f // Vertex 4
         }, new float[] {0.0f, 0.0f, 0.0f, // Vertex 1
                 1.0f, 0.0f, 0.0f, // Vertex 2
                 1.0f, 1.0f, 1.0f, // Vertex 3
@@ -116,6 +116,7 @@ public class GlGame {
         }, new int[] {0, 1, 2, 2, 3, 0}, shaders);
 
         Node triangleNode = new Node(triangle);
+        triangleNode.setTranslateZ(-2.0f);
 
         glClearColor(0.5294f, 0.8078f, 0.9216f, 1.0f);
 
@@ -129,7 +130,7 @@ public class GlGame {
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
                 triangleNode.render();
-                triangleNode.setRotateZ(triangleNode.getRotateZ() + 0.5f);
+                triangleNode.setRotateY(triangleNode.getRotateY() + 0.5f);
                 gameLoopCallback.run();
 
                 glfwSwapBuffers(window);
