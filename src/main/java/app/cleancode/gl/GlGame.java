@@ -113,7 +113,7 @@ public class GlGame {
                 1.0f, 0.0f, 0.0f, // Vertex 2
                 1.0f, 1.0f, 1.0f, // Vertex 3
                 0.0f, 0.0f, 1.0f // Vertex 4
-        }, new int[] {0, 1, 2, 2, 3, 0});
+        }, new int[] {0, 1, 2, 2, 3, 0}, shaders);
 
         Node triangleNode = new Node(triangle);
 
@@ -129,6 +129,7 @@ public class GlGame {
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
                 triangleNode.render();
+                triangleNode.setRotateZ(triangleNode.getRotateZ() + 0.5f);
                 gameLoopCallback.run();
 
                 glfwSwapBuffers(window);

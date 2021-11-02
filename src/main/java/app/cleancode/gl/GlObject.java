@@ -12,8 +12,9 @@ public class GlObject {
     private final int indexVboId;
     private final int numVertices;
     private int refs;
+    private final ShaderProgram shaderProgram;
 
-    public GlObject(float[] vertices, float[] colors, int[] indices) {
+    public GlObject(float[] vertices, float[] colors, int[] indices, ShaderProgram shaderProgram) {
         if (vertices.length % 3 != 0) {
             throw new IllegalArgumentException(
                     "Length of vertices not a multiple of 3: " + vertices.length);
@@ -27,6 +28,7 @@ public class GlObject {
                     + " vertices: " + colors.length / 3);
         }
         this.numVertices = indices.length;
+        this.shaderProgram = shaderProgram;
         vaoId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoId);
         vertexVboId = GL30.glGenBuffers();
@@ -61,7 +63,8 @@ public class GlObject {
         GL30.glBindVertexArray(0);
     }
 
-    public void render() {
+    public void render(GlTransformer transformer) {
+        shaderProgram.setUniform("transformationMatrix", transformer.getMatrix());
         GL30.glBindVertexArray(vaoId);
         GL30.glDrawElements(GL30.GL_TRIANGLES, numVertices, GL30.GL_UNSIGNED_INT, 0);
         GL30.glBindVertexArray(0);
