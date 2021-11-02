@@ -125,7 +125,6 @@ public class GlGame {
         } catch (Exception e) {
             System.err.println(e.toString());
         }
-        System.out.printf("Final fps was %.3f\n", 1000000000d / frameDuration);
         triangleNode.cleanup();
         shaders.cleanup();
     }
