@@ -25,6 +25,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -33,8 +34,13 @@ import org.lwjgl.opengl.GL30;
 import app.cleancode.game.Node;
 
 public class GlGame {
+    private static final float fov = (float) Math.toRadians(60.0);
+    private static final float zNear = 0;
+    private static final float zFar = 1024;
+
     private long window;
     private Runnable gameLoopCallback;
+    private GLFWVidMode vidmode;
 
     public GlGame(Runnable gameLoopCallback) {
         this.gameLoopCallback = gameLoopCallback;
@@ -63,7 +69,7 @@ public class GlGame {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
         // Create the window
         window = glfwCreateWindow(vidmode.width(), vidmode.height(), "Game",
@@ -86,16 +92,23 @@ public class GlGame {
         glfwShowWindow(window);
     }
 
+    private Matrix4f projectionMatrix;
+
     private void loop() {
         GL.createCapabilities();
 
+        // Initialise the projection matrix
+        projectionMatrix = new Matrix4f().perspective(fov,
+                (float) vidmode.width() / vidmode.height(), zNear, zFar);
+
         ShaderProgram shaders = new ShaderProgram();
         shaders.bind();
+        shaders.setUniform("projectionMatrix", projectionMatrix);
 
-        GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
-                -0.5f, 0.5f, 0.0f, // vertex 2
-                0.5f, 0.5f, 0.0f, // Vertex 3
-                0.5f, -0.5f, 0.0f // Vertex 4
+        GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, -2.0f, // Vertex 1
+                -0.5f, 0.5f, -2.0f, // vertex 2
+                0.5f, 0.5f, -2.0f, // Vertex 3
+                0.5f, -0.5f, -2.0f // Vertex 4
         }, new float[] {0.0f, 0.0f, 0.0f, // Vertex 1
                 1.0f, 0.0f, 0.0f, // Vertex 2
                 1.0f, 1.0f, 1.0f, // Vertex 3
