@@ -1,19 +1,19 @@
 package app.cleancode.game;
 
-import app.cleancode.gl.GlRenderer;
+import app.cleancode.gl.GlObject;
 
 public class Node {
-    private final GlRenderer renderer;
+    private final GlObject glObject;
 
-    public Node(float[] vertices, float[] colors, int[] indices) {
-        renderer = new GlRenderer(vertices, colors, indices);
+    public Node(GlObject glObject) {
+        this.glObject = glObject.createRef();
     }
 
     public void render() {
-        renderer.render();
+        glObject.render();
     }
 
     public void cleanup() {
-        renderer.cleanup();
+        glObject.cleanup();
     }
 }

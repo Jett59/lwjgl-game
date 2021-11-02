@@ -92,7 +92,7 @@ public class GlGame {
         ShaderProgram shaders = new ShaderProgram();
         shaders.bind();
 
-        Node triangle = new Node(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
+        GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
                 -0.5f, 0.5f, 0.0f, // vertex 2
                 0.5f, 0.5f, 0.0f, // Vertex 3
                 0.5f, -0.5f, 0.0f // Vertex 4
@@ -101,6 +101,8 @@ public class GlGame {
                 1.0f, 1.0f, 1.0f, // Vertex 3
                 0.0f, 0.0f, 1.0f // Vertex 4
         }, new int[] {0, 1, 2, 2, 3, 0});
+
+        Node triangleNode = new Node(triangle);
 
         glClearColor(0.5294f, 0.8078f, 0.9216f, 1.0f);
 
@@ -113,7 +115,7 @@ public class GlGame {
                 lastTime = System.nanoTime();
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
-                triangle.render();
+                triangleNode.render();
                 gameLoopCallback.run();
 
                 glfwSwapBuffers(window);
@@ -124,7 +126,7 @@ public class GlGame {
             System.err.println(e.toString());
         }
         System.out.printf("Final fps was %.3f\n", 1000000000d / frameDuration);
-        triangle.cleanup();
+        triangleNode.cleanup();
         shaders.cleanup();
     }
 }

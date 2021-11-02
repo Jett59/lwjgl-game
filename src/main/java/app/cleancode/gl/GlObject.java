@@ -5,14 +5,15 @@ import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 
-public class GlRenderer {
+public class GlObject {
     private final int vaoId;
     private final int vertexVboId;
     private final int colorVboId;
     private final int indexVboId;
     private final int numVertices;
+    private int refs;
 
-    public GlRenderer(float[] vertices, float[] colors, int[] indices) {
+    public GlObject(float[] vertices, float[] colors, int[] indices) {
         if (vertices.length % 3 != 0) {
             throw new IllegalArgumentException(
                     "Length of vertices not a multiple of 3: " + vertices.length);
@@ -66,10 +67,17 @@ public class GlRenderer {
         GL30.glBindVertexArray(0);
     }
 
+    public GlObject createRef() {
+        refs++;
+        return this;
+    }
+
     public void cleanup() {
-        GL30.glDeleteVertexArrays(vaoId);
-        GL30.glDeleteBuffers(vertexVboId);
-        GL30.glDeleteBuffers(colorVboId);
-        GL30.glDeleteBuffers(indexVboId);
+        if (--refs == 0) {
+            GL30.glDeleteVertexArrays(vaoId);
+            GL30.glDeleteBuffers(vertexVboId);
+            GL30.glDeleteBuffers(colorVboId);
+            GL30.glDeleteBuffers(indexVboId);
+        }
     }
 }
