@@ -96,6 +96,10 @@ public class GlGame {
                 -0.5f, 0.5f, 0.0f, // vertex 2
                 0.5f, 0.5f, 0.0f, // Vertex 3
                 0.5f, -0.5f, 0.0f // Vertex 4
+        }, new float[] {0.0f, 0.0f, 0.0f, // Vertex 1
+                1.0f, 0.0f, 0.0f, // Vertex 2
+                1.0f, 1.0f, 1.0f, // Vertex 3
+                0.0f, 0.0f, 1.0f // Vertex 4
         }, new int[] {0, 1, 2, 2, 3, 0});
 
         glClearColor(0.5294f, 0.8078f, 0.9216f, 1.0f);
