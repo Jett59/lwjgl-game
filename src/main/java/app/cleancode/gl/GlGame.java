@@ -23,7 +23,6 @@ import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
@@ -35,7 +34,7 @@ import app.cleancode.game.Node;
 
 public class GlGame {
     private static final float fov = (float) Math.toRadians(60.0);
-    private static final float zNear = 0;
+    private static final float zNear = 0.1f;
     private static final float zFar = 1024;
 
     private long window;
@@ -90,13 +89,14 @@ public class GlGame {
         glfwSwapInterval(1);
 
         glfwShowWindow(window);
+        GL.createCapabilities();
+        GL30.glClearColor(0.5294f, 0.8078f, 0.9216f, 0.0f);
+        GL30.glEnable(GL30.GL_DEPTH_TEST);
     }
 
     private Matrix4f projectionMatrix;
 
     private void loop() {
-        GL.createCapabilities();
-
         // Initialise the projection matrix
         projectionMatrix = new Matrix4f().perspective(fov,
                 (float) vidmode.width() / vidmode.height(), zNear, zFar);
@@ -108,17 +108,23 @@ public class GlGame {
         GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
                 -0.5f, 0.5f, 0.0f, // vertex 2
                 0.5f, 0.5f, 0.0f, // Vertex 3
-                0.5f, -0.5f, 0.0f // Vertex 4
+                0.5f, -0.5f, 0.0f, // Vertex 4
+                -0.5f, -0.5f, 0.5f, // Vertex 5
+                -0.5f, 0.5f, 0.5f, // vertex 6
+                0.5f, 0.5f, 0.5f, // Vertex 7
+                0.5f, -0.5f, 0.5f, // Vertex 8
         }, new float[] {0.0f, 0.0f, 0.0f, // Vertex 1
                 1.0f, 0.0f, 0.0f, // Vertex 2
                 1.0f, 1.0f, 1.0f, // Vertex 3
-                0.0f, 0.0f, 1.0f // Vertex 4
-        }, new int[] {0, 1, 2, 2, 3, 0}, shaders);
+                0.0f, 0.0f, 1.0f, // Vertex 4
+                0.0f, 0.0f, 0.0f, // Vertex 5
+                1.0f, 0.0f, 0.0f, // Vertex 6
+                1.0f, 1.0f, 1.0f, // Vertex 7
+                0.0f, 0.0f, 1.0f, // Vertex 8
+        }, new int[] {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 5}, shaders);
 
         Node triangleNode = new Node(triangle);
         triangleNode.setTranslateZ(-2.0f);
-
-        glClearColor(0.5294f, 0.8078f, 0.9216f, 1.0f);
 
         long lastTime = System.nanoTime();
         long frameDuration = 0;
