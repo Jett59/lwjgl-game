@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
+import app.cleancode.game.Shape;
 
 public class GlObject {
     private final int vaoId;
@@ -14,6 +15,10 @@ public class GlObject {
     private int refs;
     private final ShaderProgram shaderProgram;
     private final GlTexture texture;
+
+    public GlObject(Shape shape, ShaderProgram shaderProgram, GlTexture texture) {
+        this(shape.vertices, shape.textureCoordinates, shape.indices, shaderProgram, texture);
+    }
 
     public GlObject(float[] vertices, float[] textureCoords, int[] indices,
             ShaderProgram shaderProgram, GlTexture texture) {

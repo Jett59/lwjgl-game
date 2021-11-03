@@ -30,6 +30,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
+import app.cleancode.game.Box;
 import app.cleancode.game.Node;
 
 public class GlGame {
@@ -96,6 +97,10 @@ public class GlGame {
 
     private Matrix4f projectionMatrix;
 
+    private boolean isKeyDown(int key) {
+        return GLFW.glfwGetKey(window, key) == GLFW.GLFW_PRESS;
+    }
+
     private void loop() {
         // Initialise the projection matrix
         projectionMatrix = new Matrix4f().perspective(fov,
@@ -105,23 +110,9 @@ public class GlGame {
         shaders.bind();
         shaders.setUniform("projectionMatrix", projectionMatrix);
 
-        GlObject triangle = new GlObject(new float[] {-0.5f, -0.5f, 0.0f, // Vertex 1
-                -0.5f, 0.5f, 0.0f, // vertex 2
-                0.5f, 0.5f, 0.0f, // Vertex 3
-                0.5f, -0.5f, 0.0f, // Vertex 4
-                -0.5f, -0.5f, 0.5f, // Vertex 5
-                -0.5f, 0.5f, 0.5f, // vertex 6
-                0.5f, 0.5f, 0.5f, // Vertex 7
-                0.5f, -0.5f, 0.5f, // Vertex 8
-        }, new float[] {0.0f, 0.0f, // Vertex 1
-                0.0f, 1.0f, // Vertex 2
-                1.0f, 1.0f, // Vertex 3
-                1.0f, 0.0f, // Vertex 4
-                0.0f, 0.0f, // Vertex 5
-                0.0f, 1.0f, // Vertex 6
-                1.0f, 1.0f, // Vertex 7
-                1.0f, 0.0f, // Vertex 8
-        }, new int[] {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 5}, shaders, new GlTexture("cube"));
+        Box triangleBox = new Box(-0.5f, -0.5f, -0.5f, 1, 1, 1);
+
+        GlObject triangle = new GlObject(triangleBox, shaders, new GlTexture("cube"));
 
         Node triangleNode = new Node(triangle);
         triangleNode.setTranslateZ(-2.0f);
@@ -136,12 +127,21 @@ public class GlGame {
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
                 triangleNode.render();
-                triangleNode.setRotateY(triangleNode.getRotateY() + 0.5f);
                 gameLoopCallback.run();
 
                 glfwSwapBuffers(window);
 
                 glfwPollEvents();
+                if (isKeyDown(GLFW.GLFW_KEY_UP)) {
+                    triangleNode.setRotateX(triangleNode.getRotateX() - 0.5f);
+                } else if (isKeyDown(GLFW.GLFW_KEY_DOWN)) {
+                    triangleNode.setRotateX(triangleNode.getRotateX() + 0.5f);
+                }
+                if (isKeyDown(GLFW.GLFW_KEY_LEFT)) {
+                    triangleNode.setRotateY(triangleNode.getRotateY() + 0.5f);
+                } else if (isKeyDown(GLFW.GLFW_KEY_RIGHT)) {
+                    triangleNode.setRotateY(triangleNode.getRotateY() - 0.5f);
+                }
             }
         } catch (Exception e) {
             System.err.println(e.toString());
