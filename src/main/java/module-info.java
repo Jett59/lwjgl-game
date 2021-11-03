@@ -3,4 +3,5 @@ module app.cleancode.lwjglTest {
     requires org.lwjgl.opengl;
     requires org.lwjgl;
     requires org.joml;
+    requires pngdecoder;
 }

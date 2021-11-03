@@ -83,6 +83,10 @@ public class ShaderProgram {
         }
     }
 
+    public void setUniform(String name, int value) {
+        GL30.glUniform1i(getUniformLocation(name), value);
+    }
+
     public void bind() {
         GL30.glUseProgram(program);
     }

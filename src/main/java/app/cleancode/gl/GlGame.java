@@ -113,15 +113,15 @@ public class GlGame {
                 -0.5f, 0.5f, 0.5f, // vertex 6
                 0.5f, 0.5f, 0.5f, // Vertex 7
                 0.5f, -0.5f, 0.5f, // Vertex 8
-        }, new float[] {0.0f, 0.0f, 0.0f, // Vertex 1
-                1.0f, 0.0f, 0.0f, // Vertex 2
-                1.0f, 1.0f, 1.0f, // Vertex 3
-                0.0f, 0.0f, 1.0f, // Vertex 4
-                0.0f, 0.0f, 0.0f, // Vertex 5
-                1.0f, 0.0f, 0.0f, // Vertex 6
-                1.0f, 1.0f, 1.0f, // Vertex 7
-                0.0f, 0.0f, 1.0f, // Vertex 8
-        }, new int[] {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 5}, shaders);
+        }, new float[] {0.0f, 0.0f, // Vertex 1
+                0.0f, 1.0f, // Vertex 2
+                1.0f, 1.0f, // Vertex 3
+                1.0f, 0.0f, // Vertex 4
+                0.0f, 0.0f, // Vertex 5
+                0.0f, 1.0f, // Vertex 6
+                1.0f, 1.0f, // Vertex 7
+                1.0f, 0.0f, // Vertex 8
+        }, new int[] {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 5}, shaders, new GlTexture("cube"));
 
         Node triangleNode = new Node(triangle);
         triangleNode.setTranslateZ(-2.0f);
