@@ -117,6 +117,8 @@ public class GlGame {
         Node triangleNode = new Node(triangle);
         triangleNode.setTranslateZ(-2.0f);
 
+        GlCamera camera = new GlCamera();
+
         long lastTime = System.nanoTime();
         long frameDuration = 0;
 
@@ -126,6 +128,7 @@ public class GlGame {
                 lastTime = System.nanoTime();
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
+                triangleNode.applyCamera(camera);
                 triangleNode.render();
                 gameLoopCallback.run();
 
@@ -133,14 +136,14 @@ public class GlGame {
 
                 glfwPollEvents();
                 if (isKeyDown(GLFW.GLFW_KEY_UP)) {
-                    triangleNode.setRotateX(triangleNode.getRotateX() - 0.5f);
+                    camera.move(0, 0, -0.01f);
                 } else if (isKeyDown(GLFW.GLFW_KEY_DOWN)) {
-                    triangleNode.setRotateX(triangleNode.getRotateX() + 0.5f);
+                    camera.move(0, 0, 0.01f);
                 }
                 if (isKeyDown(GLFW.GLFW_KEY_LEFT)) {
-                    triangleNode.setRotateY(triangleNode.getRotateY() + 0.5f);
+                    camera.move(-0.01f, 0, 0);
                 } else if (isKeyDown(GLFW.GLFW_KEY_RIGHT)) {
-                    triangleNode.setRotateY(triangleNode.getRotateY() - 0.5f);
+                    camera.move(0.01f, 0, 0);
                 }
             }
         } catch (Exception e) {

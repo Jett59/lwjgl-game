@@ -92,6 +92,11 @@ public class GlTransformer {
         return rotation.z;
     }
 
+    public void applyCamera(GlCamera camera) {
+        calculateMatrix();
+        transformationMatrix.mul(camera.getMatrix());
+    }
+
     public void cleanup() {
         MemoryUtil.memFree(matrixBuffer);
     }

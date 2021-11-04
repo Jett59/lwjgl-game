@@ -1,5 +1,6 @@
 package app.cleancode.game;
 
+import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlObject;
 import app.cleancode.gl.GlTransformer;
 
@@ -71,5 +72,9 @@ public class Node {
 
     public float getRotateZ() {
         return transformer.getRotateZ();
+    }
+
+    public void applyCamera(GlCamera camera) {
+        transformer.applyCamera(camera);
     }
 }
