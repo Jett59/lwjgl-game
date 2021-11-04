@@ -24,12 +24,14 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import java.nio.DoubleBuffer;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 import app.cleancode.game.Box;
 import app.cleancode.game.Node;
 
@@ -37,6 +39,8 @@ public class GlGame {
     private static final float fov = (float) Math.toRadians(60.0);
     private static final float zNear = 0.1f;
     private static final float zFar = 1024;
+    private static final float mouseSensitivity = 0.2f;
+    private static final float speed = 0.02f;
 
     private long window;
     private Runnable gameLoopCallback;
@@ -90,6 +94,7 @@ public class GlGame {
         glfwSwapInterval(1);
 
         glfwShowWindow(window);
+        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
         GL.createCapabilities();
         GL30.glClearColor(0.5294f, 0.8078f, 0.9216f, 0.0f);
         GL30.glEnable(GL30.GL_DEPTH_TEST);
@@ -119,6 +124,12 @@ public class GlGame {
 
         GlCamera camera = new GlCamera();
 
+        DoubleBuffer cursorX = MemoryUtil.memAllocDouble(1);
+        DoubleBuffer cursorY = MemoryUtil.memAllocDouble(1);
+
+        double previousCursorX = Double.POSITIVE_INFINITY,
+                previousCursorY = Double.POSITIVE_INFINITY;
+
         long lastTime = System.nanoTime();
         long frameDuration = 0;
 
@@ -135,20 +146,36 @@ public class GlGame {
                 glfwSwapBuffers(window);
 
                 glfwPollEvents();
-                if (isKeyDown(GLFW.GLFW_KEY_UP)) {
-                    camera.move(0, 0, -0.01f);
-                } else if (isKeyDown(GLFW.GLFW_KEY_DOWN)) {
-                    camera.move(0, 0, 0.01f);
+                cursorX.position(0);
+                cursorY.position(0);
+                GLFW.glfwGetCursorPos(window, cursorX, cursorY);
+                double newCursorX = cursorX.get(0);
+                double newCursorY = cursorY.get(0);
+                if (previousCursorX == Double.POSITIVE_INFINITY
+                        || previousCursorY == Double.POSITIVE_INFINITY) {
+                    previousCursorX = newCursorX;
+                    previousCursorY = newCursorY;
                 }
-                if (isKeyDown(GLFW.GLFW_KEY_LEFT)) {
-                    camera.move(-0.01f, 0, 0);
-                } else if (isKeyDown(GLFW.GLFW_KEY_RIGHT)) {
-                    camera.move(0.01f, 0, 0);
+                camera.rotate((float) (newCursorY - previousCursorY) * mouseSensitivity,
+                        (float) (newCursorX - previousCursorX) * mouseSensitivity, 0);
+                previousCursorX = newCursorX;
+                previousCursorY = newCursorY;
+                if (isKeyDown(GLFW.GLFW_KEY_W)) {
+                    camera.move(0, 0, -speed);
+                } else if (isKeyDown(GLFW.GLFW_KEY_S)) {
+                    camera.move(0, 0, speed);
+                }
+                if (isKeyDown(GLFW.GLFW_KEY_A)) {
+                    camera.move(-speed, 0, 0);
+                } else if (isKeyDown(GLFW.GLFW_KEY_D)) {
+                    camera.move(speed, 0, 0);
                 }
             }
         } catch (Exception e) {
             System.err.println(e.toString());
         }
+        MemoryUtil.memFree(cursorY);
+        MemoryUtil.memFree(cursorX);
         triangleNode.cleanup();
         shaders.cleanup();
     }

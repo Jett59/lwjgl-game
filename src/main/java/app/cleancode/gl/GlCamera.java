@@ -18,12 +18,12 @@ public class GlCamera {
 
     public void move(float deltaX, float deltaY, float deltaZ) {
         if (deltaX != 0) {
-            translation.x += (float) (Math.sin(Math.toRadians(rotation.y - 90f)) * -1f * deltaX);
-            translation.z += (float) (Math.cos(Math.toRadians(rotation.y - 90f)) * deltaX);
+            translation.x += (float) Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * deltaX;
+            translation.z += (float) Math.cos(Math.toRadians(rotation.y - 90)) * deltaX;
         }
         if (deltaZ != 0) {
-            translation.x += (float) (Math.sin(Math.toRadians(rotation.y)) * -1f * deltaZ);
-            translation.z += (float) (Math.cos(Math.toRadians(rotation.y)) * deltaZ);
+            translation.x += (float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * deltaZ;
+            translation.z += (float) Math.cos(Math.toRadians(rotation.y)) * deltaZ;
         }
         translation.y += deltaY;
         changed = true;
@@ -33,13 +33,17 @@ public class GlCamera {
         rotation.x += deltaX;
         rotation.y += deltaY;
         rotation.z += deltaZ;
+        rotation.x %= 360f;
+        rotation.y %= 360f;
+        rotation.z %= 360f;
         changed = true;
     }
 
     public Matrix4f getMatrix() {
         if (changed) {
             changed = false;
-            return matrix.identity().rotateX((float) Math.toRadians(rotation.x))
+            matrix.identity();
+            return matrix.rotateX((float) Math.toRadians(rotation.x))
                     .rotateY((float) Math.toRadians(rotation.y))
                     .rotateZ((float) Math.toRadians(rotation.z))
                     .translate(-translation.x, -translation.y, -translation.z);

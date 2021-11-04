@@ -94,7 +94,7 @@ public class GlTransformer {
 
     public void applyCamera(GlCamera camera) {
         calculateMatrix();
-        transformationMatrix.mul(camera.getMatrix());
+        camera.getMatrix().mul(transformationMatrix, transformationMatrix);
     }
 
     public void cleanup() {
