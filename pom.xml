@@ -81,8 +81,8 @@
 			<lwjgl.natives>natives-macos</lwjgl.natives>
 		</properties>
 	</profile>
-	<profile>
-		<id>lwjgl-natives-macos-arm64</id>
+		<profile>
+		<id>lwjgl-natives-macos-aarch64</id>
 		<activation>
 			<os>
 				<family>mac</family>
