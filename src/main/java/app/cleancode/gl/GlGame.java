@@ -170,6 +170,11 @@ public class GlGame {
                 } else if (isKeyDown(GLFW.GLFW_KEY_D)) {
                     camera.move(speed, 0, 0);
                 }
+                if (isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+                    camera.move(0, speed, 0);
+                } else if (isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+                    camera.move(0, -speed, 0);
+                }
             }
         } catch (Exception e) {
             System.err.println(e.toString());
