@@ -6,10 +6,19 @@
   
   <properties>
   <java.version>16</java.version>
-	<lwjgl.version>3.2.3</lwjgl.version>
+	<lwjgl.version>3.3.0-SNAPSHOT</lwjgl.version>
 	<joml.version>1.10.2</joml.version>
 	<pngdecoder.version>1.0</pngdecoder.version>
 </properties>
+
+	<repositories>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases><enabled>false</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
 
 <profiles>
 	<profile>
@@ -70,6 +79,18 @@
 		</activation>
 		<properties>
 			<lwjgl.natives>natives-macos</lwjgl.natives>
+		</properties>
+	</profile>
+	<profile>
+		<id>lwjgl-natives-macos-arm64</id>
+		<activation>
+			<os>
+				<family>mac</family>
+				<arch>aarch64</arch>
+			</os>
+		</activation>
+		<properties>
+			<lwjgl.natives>natives-macos-arm64</lwjgl.natives>
 		</properties>
 	</profile>
 	<profile>
