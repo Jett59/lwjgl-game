@@ -36,7 +36,7 @@ import app.cleancode.game.Box;
 import app.cleancode.game.Node;
 
 public class GlGame {
-    private static final float fov = (float) Math.toRadians(60.0);
+    private static final float fieldOfView = (float) Math.toRadians(60.0);
     private static final float zNear = 0.1f;
     private static final float zFar = 1024;
     private static final float mouseSensitivity = 0.2f;
@@ -108,7 +108,7 @@ public class GlGame {
 
     private void loop() {
         // Initialise the projection matrix
-        projectionMatrix = new Matrix4f().perspective(fov,
+        projectionMatrix = new Matrix4f().perspective(fieldOfView,
                 (float) vidmode.width() / vidmode.height(), zNear, zFar);
 
         ShaderProgram shaders = new ShaderProgram();
