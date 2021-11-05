@@ -56,10 +56,6 @@ public class GlGame {
 
     private Matrix4f projectionMatrix;
 
-    private boolean isKeyDown(int key) {
-        return GLFW.glfwGetKey(window.getWindowHandle(), key) == GLFW.GLFW_PRESS;
-    }
-
     private void loop() {
         // Initialise the projection matrix
         projectionMatrix = new Matrix4f().perspective(fieldOfView,
@@ -93,6 +89,7 @@ public class GlGame {
                 lastTime = System.nanoTime();
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
+                triangleNode.applyTransforms();
                 triangleNode.applyCamera(camera);
                 triangleNode.render();
                 gameLoopCallback.run();
@@ -114,19 +111,19 @@ public class GlGame {
                         (float) (newCursorX - previousCursorX) * mouseSensitivity, 0);
                 previousCursorX = newCursorX;
                 previousCursorY = newCursorY;
-                if (isKeyDown(GLFW.GLFW_KEY_W)) {
+                if (window.isKeyDown(GLFW.GLFW_KEY_W)) {
                     camera.move(0, 0, -speed);
-                } else if (isKeyDown(GLFW.GLFW_KEY_S)) {
+                } else if (window.isKeyDown(GLFW.GLFW_KEY_S)) {
                     camera.move(0, 0, speed);
                 }
-                if (isKeyDown(GLFW.GLFW_KEY_A)) {
+                if (window.isKeyDown(GLFW.GLFW_KEY_A)) {
                     camera.move(-speed, 0, 0);
-                } else if (isKeyDown(GLFW.GLFW_KEY_D)) {
+                } else if (window.isKeyDown(GLFW.GLFW_KEY_D)) {
                     camera.move(speed, 0, 0);
                 }
-                if (isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+                if (window.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
                     camera.move(0, speed, 0);
-                } else if (isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+                } else if (window.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
                     camera.move(0, -speed, 0);
                 }
             }

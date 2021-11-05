@@ -74,6 +74,10 @@ public class Node {
         return transformer.getRotateZ();
     }
 
+    public void applyTransforms() {
+        transformer.applyTransforms();
+    }
+
     public void applyCamera(GlCamera camera) {
         transformer.applyCamera(camera);
     }

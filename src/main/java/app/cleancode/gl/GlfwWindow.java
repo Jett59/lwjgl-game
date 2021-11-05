@@ -7,14 +7,18 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import java.util.HashSet;
+import java.util.Set;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 
 public class GlfwWindow implements AutoCloseable {
     private final long window;
+    private final Set<Integer> pressedKeys;
 
     public GlfwWindow(String title, boolean resizable, long monitor, int x, int y, int width,
             int height, boolean vsync) {
+        pressedKeys = new HashSet<>();
         // Reset the window properties
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
@@ -29,6 +33,20 @@ public class GlfwWindow implements AutoCloseable {
         if (vsync) {
             GLFW.glfwSwapInterval(1);
         }
+        GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+            switch (action) {
+                case GLFW.GLFW_PRESS: {
+                    pressedKeys.add(key);
+                    break;
+                }
+                case GLFW.GLFW_RELEASE: {
+                    pressedKeys.remove(key);
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
     }
 
     public long getWindowHandle() {
@@ -42,6 +60,10 @@ public class GlfwWindow implements AutoCloseable {
 
     public void show() {
         GLFW.glfwShowWindow(window);
+    }
+
+    public boolean isKeyDown(int key) {
+        return pressedKeys.contains(key);
     }
 
     @Override

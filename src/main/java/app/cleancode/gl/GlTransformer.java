@@ -11,6 +11,7 @@ public class GlTransformer {
     private Vector3f translation;
     private float scale;
     private Vector3f rotation;
+    private boolean changed = true;
 
     public GlTransformer() {
         transformationMatrix = new Matrix4f();
@@ -18,20 +19,21 @@ public class GlTransformer {
         translation = new Vector3f();
         scale = 1f;
         rotation = new Vector3f();
-        calculateMatrix();
     }
 
     private void calculateMatrix() {
-        transformationMatrix.translation(translation);
-        transformationMatrix.rotateX((float) Math.toRadians(rotation.x));
-        transformationMatrix.rotateY((float) Math.toRadians(rotation.y));
-        transformationMatrix.rotateZ((float) Math.toRadians(rotation.z));
-        transformationMatrix.scale(scale);
+        if (changed) {
+            transformationMatrix.translation(translation);
+            transformationMatrix.rotateX((float) Math.toRadians(rotation.x));
+            transformationMatrix.rotateY((float) Math.toRadians(rotation.y));
+            transformationMatrix.rotateZ((float) Math.toRadians(rotation.z));
+            transformationMatrix.scale(scale);
+            changed = false;
+        }
     }
 
     public void setTranslateX(float value) {
         translation.x = value;
-        calculateMatrix();
     }
 
     public float getTranslateX() {
@@ -40,7 +42,6 @@ public class GlTransformer {
 
     public void setTranslateY(float value) {
         translation.y = value;
-        calculateMatrix();
     }
 
     public float getTranslateY() {
@@ -49,7 +50,6 @@ public class GlTransformer {
 
     public void setTranslateZ(float value) {
         translation.z = value;
-        calculateMatrix();
     }
 
     public float getTranslateZ() {
@@ -58,7 +58,6 @@ public class GlTransformer {
 
     public void setScale(float value) {
         scale = value;
-        calculateMatrix();
     }
 
     public float getScale() {
@@ -67,7 +66,6 @@ public class GlTransformer {
 
     public void setRotateX(float value) {
         rotation.x = value;
-        calculateMatrix();
     }
 
     public float getRotateX() {
@@ -76,7 +74,6 @@ public class GlTransformer {
 
     public void setRotateY(float value) {
         rotation.y = value;
-        calculateMatrix();
     }
 
     public float getRotateY() {
@@ -85,16 +82,19 @@ public class GlTransformer {
 
     public void setRotateZ(float value) {
         rotation.z = value;
-        calculateMatrix();
     }
 
     public float getRotateZ() {
         return rotation.z;
     }
 
-    public void applyCamera(GlCamera camera) {
+    public void applyTransforms() {
         calculateMatrix();
+    }
+
+    public void applyCamera(GlCamera camera) {
         camera.getMatrix().mul(transformationMatrix, transformationMatrix);
+        changed = true;
     }
 
     public void cleanup() {
