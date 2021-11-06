@@ -14,10 +14,14 @@ import org.lwjgl.system.MemoryUtil;
 
 public class GlfwWindow implements AutoCloseable {
     private final long window;
+    private int width, height;
+    private double mouseX, mouseY;
     private final Set<Integer> pressedKeys;
 
     public GlfwWindow(String title, boolean resizable, long monitor, int x, int y, int width,
             int height, boolean vsync) {
+        this.width = width;
+        this.height = height;
         pressedKeys = new HashSet<>();
         // Reset the window properties
         glfwDefaultWindowHints();
@@ -64,6 +68,27 @@ public class GlfwWindow implements AutoCloseable {
 
     public boolean isKeyDown(int key) {
         return pressedKeys.contains(key);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    protected void setMousePosition(double x, double y) {
+        mouseX = x;
+        mouseY = y;
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
     }
 
     @Override

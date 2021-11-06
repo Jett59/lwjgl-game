@@ -12,23 +12,20 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
-import app.cleancode.game.Box;
-import app.cleancode.game.Node;
+import app.cleancode.game.GameLogic;
 
 public class GlGame {
     private static final float fieldOfView = (float) Math.toRadians(60.0);
     private static final float zNear = 0.1f;
     private static final float zFar = 1024;
-    private static final float mouseSensitivity = 0.2f;
-    private static final float speed = 0.02f;
 
     private GlfwWindow window;
-    private Runnable gameLoopCallback;
+    private GameLogic gameLogic;
     private long primaryMonitor;
     private int screenWidth, screenHeight;
 
-    public GlGame(Runnable gameLoopCallback) {
-        this.gameLoopCallback = gameLoopCallback;
+    public GlGame(GameLogic gameLogic) {
+        this.gameLogic = gameLogic;
     }
 
     public void run() {
@@ -65,68 +62,29 @@ public class GlGame {
         shaders.bind();
         shaders.setUniform("projectionMatrix", projectionMatrix);
 
-        Box triangleBox = new Box(-0.5f, -0.5f, -0.5f, 1, 1, 1);
-
-        GlObject triangle =
-                context.addObject(new GlObject(triangleBox, shaders, new GlTexture("cube")));
-
-        Node triangleNode = context.addObject(new Node(triangle));
-        triangleNode.setTranslateZ(-2.0f);
+        context.setShaders(shaders);
 
         GlCamera camera = new GlCamera();
+        context.setCamera(camera);
 
         DoubleBuffer cursorX = MemoryUtil.memAllocDouble(1);
         DoubleBuffer cursorY = MemoryUtil.memAllocDouble(1);
 
-        double previousCursorX = Double.POSITIVE_INFINITY,
-                previousCursorY = Double.POSITIVE_INFINITY;
-
-        long lastTime = System.nanoTime();
-        long frameDuration = 0;
-
         try {
+            gameLogic.begin(context);
             while (!glfwWindowShouldClose(window.getWindowHandle())) {
-                frameDuration = System.nanoTime() - lastTime;
-                lastTime = System.nanoTime();
                 GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
-                triangleNode.applyTransforms();
-                triangleNode.applyCamera(camera);
-                triangleNode.render();
-                gameLoopCallback.run();
+                cursorX.position(0);
+                cursorY.position(0);
+                GLFW.glfwGetCursorPos(window.getWindowHandle(), cursorX, cursorY);
+                window.setMousePosition(cursorX.get(0), cursorY.get(0));
+
+                gameLogic.update(context, window);
 
                 glfwSwapBuffers(window.getWindowHandle());
 
                 glfwPollEvents();
-                cursorX.position(0);
-                cursorY.position(0);
-                GLFW.glfwGetCursorPos(window.getWindowHandle(), cursorX, cursorY);
-                double newCursorX = cursorX.get(0);
-                double newCursorY = cursorY.get(0);
-                if (previousCursorX == Double.POSITIVE_INFINITY
-                        || previousCursorY == Double.POSITIVE_INFINITY) {
-                    previousCursorX = newCursorX;
-                    previousCursorY = newCursorY;
-                }
-                camera.rotate((float) (newCursorY - previousCursorY) * mouseSensitivity,
-                        (float) (newCursorX - previousCursorX) * mouseSensitivity, 0);
-                previousCursorX = newCursorX;
-                previousCursorY = newCursorY;
-                if (window.isKeyDown(GLFW.GLFW_KEY_W)) {
-                    camera.move(0, 0, -speed);
-                } else if (window.isKeyDown(GLFW.GLFW_KEY_S)) {
-                    camera.move(0, 0, speed);
-                }
-                if (window.isKeyDown(GLFW.GLFW_KEY_A)) {
-                    camera.move(-speed, 0, 0);
-                } else if (window.isKeyDown(GLFW.GLFW_KEY_D)) {
-                    camera.move(speed, 0, 0);
-                }
-                if (window.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-                    camera.move(0, speed, 0);
-                } else if (window.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-                    camera.move(0, -speed, 0);
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
