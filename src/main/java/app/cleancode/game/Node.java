@@ -4,12 +4,12 @@ import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlObject;
 import app.cleancode.gl.GlTransformer;
 
-public class Node {
+public class Node implements AutoCloseable {
     private final GlObject glObject;
     private final GlTransformer transformer;
 
     public Node(GlObject glObject) {
-        this.glObject = glObject.createRef();
+        this.glObject = glObject;
         this.transformer = new GlTransformer();
     }
 
@@ -17,9 +17,8 @@ public class Node {
         glObject.render(transformer);
     }
 
-    public void cleanup() {
-        glObject.cleanup();
-        transformer.cleanup();
+    public void close() {
+        transformer.close();
     }
 
     public void setTranslateX(float value) {

@@ -32,9 +32,9 @@ public class GlGame {
     }
 
     public void run() {
-        try (GlfwContext context = new GlfwContext()) {
-            init(context);
-            loop();
+        try (GlfwContext glfwContext = new GlfwContext(); GlContext glContext = new GlContext()) {
+            init(glfwContext);
+            loop(glContext);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,20 +56,21 @@ public class GlGame {
 
     private Matrix4f projectionMatrix;
 
-    private void loop() {
+    private void loop(GlContext context) {
         // Initialise the projection matrix
         projectionMatrix = new Matrix4f().perspective(fieldOfView,
                 (float) screenWidth / screenHeight, zNear, zFar);
 
-        ShaderProgram shaders = new ShaderProgram();
+        ShaderProgram shaders = context.addObject(new ShaderProgram());
         shaders.bind();
         shaders.setUniform("projectionMatrix", projectionMatrix);
 
         Box triangleBox = new Box(-0.5f, -0.5f, -0.5f, 1, 1, 1);
 
-        GlObject triangle = new GlObject(triangleBox, shaders, new GlTexture("cube"));
+        GlObject triangle =
+                context.addObject(new GlObject(triangleBox, shaders, new GlTexture("cube")));
 
-        Node triangleNode = new Node(triangle);
+        Node triangleNode = context.addObject(new Node(triangle));
         triangleNode.setTranslateZ(-2.0f);
 
         GlCamera camera = new GlCamera();
@@ -128,11 +129,9 @@ public class GlGame {
                 }
             }
         } catch (Exception e) {
-            System.err.println(e.toString());
+            e.printStackTrace();
         }
         MemoryUtil.memFree(cursorY);
         MemoryUtil.memFree(cursorX);
-        triangleNode.cleanup();
-        shaders.cleanup();
     }
 }

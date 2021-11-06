@@ -6,13 +6,12 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 import app.cleancode.game.Shape;
 
-public class GlObject {
+public class GlObject implements AutoCloseable {
     private final int vaoId;
     private final int vertexVboId;
     private final int textureVboId;
     private final int indexVboId;
     private final int numVertices;
-    private int refs;
     private final ShaderProgram shaderProgram;
     private final GlTexture texture;
 
@@ -80,18 +79,12 @@ public class GlObject {
         GL30.glBindVertexArray(0);
     }
 
-    public GlObject createRef() {
-        refs++;
-        return this;
-    }
-
-    public void cleanup() {
-        if (--refs == 0) {
-            GL30.glDeleteVertexArrays(vaoId);
-            GL30.glDeleteBuffers(vertexVboId);
-            GL30.glDeleteBuffers(textureVboId);
-            GL30.glDeleteBuffers(indexVboId);
-            texture.cleanup();
-        }
+    @Override
+    public void close() {
+        GL30.glDeleteVertexArrays(vaoId);
+        GL30.glDeleteBuffers(vertexVboId);
+        GL30.glDeleteBuffers(textureVboId);
+        GL30.glDeleteBuffers(indexVboId);
+        texture.cleanup();
     }
 }

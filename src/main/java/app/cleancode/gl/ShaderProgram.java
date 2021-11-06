@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 import app.cleancode.resources.ResourceReader;
 
-public class ShaderProgram {
+public class ShaderProgram implements AutoCloseable {
     private int program;
     private Map<String, Integer> shaderUniforms = new HashMap<>();
 
@@ -95,7 +95,8 @@ public class ShaderProgram {
         GL30.glUseProgram(0);
     }
 
-    public void cleanup() {
+    @Override
+    public void close() {
         unbind();
         GL30.glDeleteProgram(program);
     }

@@ -5,7 +5,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.system.MemoryUtil;
 
-public class GlTransformer {
+public class GlTransformer implements AutoCloseable {
     private Matrix4f transformationMatrix;
     private FloatBuffer matrixBuffer;
     private Vector3f translation;
@@ -97,7 +97,8 @@ public class GlTransformer {
         changed = true;
     }
 
-    public void cleanup() {
+    @Override
+    public void close() {
         MemoryUtil.memFree(matrixBuffer);
     }
 
