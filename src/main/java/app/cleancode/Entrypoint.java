@@ -1,15 +1,16 @@
 package app.cleancode;
 
 import org.lwjgl.glfw.GLFW;
-import app.cleancode.game.Box;
+import app.cleancode.game.Block;
+import app.cleancode.game.BlockIds;
+import app.cleancode.game.BlockPosition;
+import app.cleancode.game.Blocks;
 import app.cleancode.game.GameLogic;
-import app.cleancode.game.Node;
 import app.cleancode.game.Scene;
+import app.cleancode.game.World;
 import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlGame;
-import app.cleancode.gl.GlObject;
-import app.cleancode.gl.GlTexture;
 import app.cleancode.gl.GlfwWindow;
 
 public class Entrypoint implements GameLogic {
@@ -22,20 +23,14 @@ public class Entrypoint implements GameLogic {
     }
 
     private final Scene scene = new Scene();
+    private final World world = new World();
 
     @Override
     public void begin(GlContext context) { // TODO Auto-generated method stub
-        Box boxShape = new Box(-0.5f, -0.5f, -0.5f, 1, 1, 1);
-
-        GlObject box = context
-                .addObject(new GlObject(boxShape, context.getShaders(), new GlTexture("cube")));
-
+        Blocks.initBlocks(context);
         for (int x = -50; x < 50; x++) {
             for (int z = -50; z < 50; z++) {
-                Node boxNode = scene.add(context.addObject(new Node(box)));
-                boxNode.setTranslateX(x * 1f);
-                boxNode.setTranslateZ(-1.0f * z);
-                boxNode.setTranslateY(-1.5f);
+                scene.add(new Block(BlockIds.block, world, new BlockPosition(x, -2, z)));
             }
         }
     }
