@@ -15,7 +15,7 @@ import app.cleancode.gl.GlfwWindow;
 
 public class Entrypoint implements GameLogic {
     private static final float speed = 0.02f;
-    private static final double mouseSensitivity = 0.2;
+    private static final double mouseSensitivity = 0.1;
 
     public static void main(String[] args) {
         GlGame game = new GlGame(new Entrypoint());
@@ -37,8 +37,21 @@ public class Entrypoint implements GameLogic {
 
     private double previousMouseX = Double.MAX_VALUE, previousMouseY = Double.MAX_VALUE;
 
+    private long lastMeasurementTimeMillis = Long.MIN_VALUE;
+    private long frames = 0;
+    private long fps = 0;
+
     @Override
     public void update(GlContext context, GlfwWindow window) {
+        frames++;
+        if (frames >= 100) {
+            long currentTimeMillis = System.currentTimeMillis();
+            fps = (long) (1000d
+                    / ((currentTimeMillis - lastMeasurementTimeMillis) / (double) frames));
+            lastMeasurementTimeMillis = currentTimeMillis;
+            window.setTitle(String.format("Game - %d fps", fps));
+            frames = 0;
+        }
         scene.render(context);
         GlCamera camera = context.getCamera();
         if (previousMouseX != Double.MAX_VALUE && previousMouseY != Double.MAX_VALUE) {

@@ -91,6 +91,10 @@ public class GlfwWindow implements AutoCloseable {
         return mouseY;
     }
 
+    public void setTitle(String title) {
+        GLFW.glfwSetWindowTitle(window, title);
+    }
+
     @Override
     public void close() {
         glfwFreeCallbacks(window);
