@@ -1,13 +1,13 @@
 package app.cleancode;
 
 import org.lwjgl.glfw.GLFW;
-import app.cleancode.game.Block;
-import app.cleancode.game.BlockIds;
-import app.cleancode.game.BlockPosition;
-import app.cleancode.game.Blocks;
 import app.cleancode.game.GameLogic;
 import app.cleancode.game.Scene;
 import app.cleancode.game.World;
+import app.cleancode.game.block.Block;
+import app.cleancode.game.block.BlockIds;
+import app.cleancode.game.block.BlockPosition;
+import app.cleancode.game.block.Blocks;
 import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlGame;

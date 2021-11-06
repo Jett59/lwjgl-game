@@ -1,4 +1,7 @@
-package app.cleancode.game;
+package app.cleancode.game.block;
+
+import app.cleancode.game.Node;
+import app.cleancode.game.World;
 
 public class Block extends Node {
     private BlockPosition position;

@@ -2,6 +2,8 @@ package app.cleancode.game;
 
 import java.util.HashMap;
 import java.util.Map;
+import app.cleancode.game.block.Block;
+import app.cleancode.game.block.BlockPosition;
 
 public class World {
     private Map<BlockPosition, Block> blocks;

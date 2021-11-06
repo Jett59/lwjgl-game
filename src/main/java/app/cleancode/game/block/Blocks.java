@@ -1,7 +1,8 @@
-package app.cleancode.game;
+package app.cleancode.game.block;
 
 import java.util.HashMap;
 import java.util.Map;
+import app.cleancode.game.Box;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlObject;
 import app.cleancode.gl.GlTexture;
