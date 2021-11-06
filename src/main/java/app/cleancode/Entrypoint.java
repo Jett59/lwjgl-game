@@ -30,8 +30,14 @@ public class Entrypoint implements GameLogic {
         GlObject box = context
                 .addObject(new GlObject(boxShape, context.getShaders(), new GlTexture("cube")));
 
-        Node boxNode = scene.add(context.addObject(new Node(box)));
-        boxNode.setTranslateZ(-5.0f);
+        for (int x = -50; x < 50; x++) {
+            for (int z = -50; z < 50; z++) {
+                Node boxNode = scene.add(context.addObject(new Node(box)));
+                boxNode.setTranslateX(x * 1f);
+                boxNode.setTranslateZ(-1.0f * z);
+                boxNode.setTranslateY(-1.5f);
+            }
+        }
     }
 
     private double previousMouseX = Double.MAX_VALUE, previousMouseY = Double.MAX_VALUE;
