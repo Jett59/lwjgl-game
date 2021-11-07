@@ -11,14 +11,34 @@ import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlGame;
 import app.cleancode.gl.GlfwWindow;
+import app.cleancode.profiler.Profiler;
 
 public class Entrypoint implements GameLogic {
     private static final float speed = 0.02f;
     private static final double mouseSensitivity = 0.1;
 
+    @SuppressWarnings("deprecation")
     public static void main(String[] args) {
+        boolean shouldProfile = false;
+        for (String arg : args) {
+            if (arg.equalsIgnoreCase("--profile")) {
+                shouldProfile = true;
+            }
+        }
+        Profiler profiler = null;
+        Thread profilerThread = null;
+        if (shouldProfile) {
+            profiler = new Profiler();
+            profilerThread = new Thread(profiler, "Profiler thread");
+            profilerThread.setDaemon(true);
+            profilerThread.start();
+        }
         GlGame game = new GlGame(new Entrypoint());
         game.run();
+        if (shouldProfile) {
+            profilerThread.stop();
+            profiler.dump();
+        }
     }
 
     private final Scene scene = new Scene();
