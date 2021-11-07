@@ -22,9 +22,11 @@ public class Scene {
 
     public void render(GlContext context) {
         for (Node node : nodes) {
-            node.applyTransforms();
-            node.applyCamera(context.getCamera());
-            node.render();
+            if (node.shouldRender()) {
+                node.applyTransforms();
+                node.applyCamera(context.getCamera());
+                node.render();
+            }
         }
     }
 }

@@ -80,4 +80,8 @@ public class Node implements AutoCloseable {
     public void applyCamera(GlCamera camera) {
         transformer.applyCamera(camera);
     }
+
+    public boolean shouldRender() {
+        return true;
+    }
 }
