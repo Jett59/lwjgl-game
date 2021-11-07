@@ -1,26 +1,31 @@
 package app.cleancode.game;
 
-import java.util.HashMap;
-import java.util.Map;
 import app.cleancode.game.block.Block;
-import app.cleancode.game.block.BlockPosition;
 
 public class World {
-    private Map<BlockPosition, Block> blocks;
+    private static final int xMax = 256;
+    private static final int yMax = 256;
+    private static final int zMax = 256;
+
+    private static final int xAdjust = xMax / 2;
+    private static final int yAdjust = yMax / 2;
+    private static final int zAdjust = zMax / 2;
+
+    private Block[][][] blocks;
 
     public World() {
-        blocks = new HashMap<>();
+        blocks = new Block[xMax][yMax][zMax];
     }
 
-    public void put(Block block, BlockPosition position) {
-        blocks.put(position, block);
+    public void put(Block block, int x, int y, int z) {
+        blocks[x + xAdjust][y + yAdjust][z + zAdjust] = block;
     }
 
-    public void remove(BlockPosition position) {
-        blocks.remove(position);
+    public void remove(int x, int y, int z) {
+        blocks[x + xAdjust][y + yAdjust][z + zAdjust] = null;
     }
 
-    public Block blockAt(BlockPosition position) {
-        return blocks.get(position);
+    public Block blockAt(int x, int y, int z) {
+        return blocks[x + xAdjust][y + yAdjust][z + zAdjust];
     }
 }

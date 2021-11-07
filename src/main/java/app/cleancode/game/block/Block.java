@@ -4,24 +4,28 @@ import app.cleancode.game.Node;
 import app.cleancode.game.World;
 
 public class Block extends Node {
-    private BlockPosition position;
+    private int x, y, z;
 
-    public Block(int blockId, World world, BlockPosition initialPosition) {
+    public Block(int blockId, World world, int initialX, int initialY, int initialZ) {
         super(Blocks.getBlock(blockId));
-        position = initialPosition;
-        world.put(this, initialPosition);
-        setTranslateX(position.x());
-        setTranslateY(position.y());
-        setTranslateZ(position.z());
+        x = initialX;
+        y = initialY;
+        z = initialZ;
+        world.put(this, x, y, z);
+        setTranslateX(x);
+        setTranslateY(y);
+        setTranslateZ(z);
     }
 
-    public void move(World world, BlockPosition position) {
-        world.put(this, position);
-        world.remove(this.position);
-        this.position = position;
-        setTranslateX(position.x());
-        setTranslateY(position.y());
-        setTranslateZ(position.z());
+    public void move(World world, int x, int y, int z) {
+        world.put(this, x, y, z);
+        world.remove(this.x, this.y, this.z);
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        setTranslateX(x);
+        setTranslateY(y);
+        setTranslateZ(z);
     }
 
 }

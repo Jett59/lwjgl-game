@@ -6,7 +6,6 @@ import app.cleancode.game.Scene;
 import app.cleancode.game.World;
 import app.cleancode.game.block.Block;
 import app.cleancode.game.block.BlockIds;
-import app.cleancode.game.block.BlockPosition;
 import app.cleancode.game.block.Blocks;
 import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
@@ -30,7 +29,7 @@ public class Entrypoint implements GameLogic {
         Blocks.initBlocks(context);
         for (int x = -50; x < 50; x++) {
             for (int z = -50; z < 50; z++) {
-                scene.add(new Block(BlockIds.block, world, new BlockPosition(x, -2, z)));
+                scene.add(new Block(BlockIds.block, world, x, -2, z));
             }
         }
     }
