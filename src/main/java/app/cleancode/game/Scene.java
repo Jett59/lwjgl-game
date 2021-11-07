@@ -1,6 +1,6 @@
 package app.cleancode.game;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import app.cleancode.gl.GlContext;
 
@@ -8,7 +8,7 @@ public class Scene {
     private final List<Node> nodes;
 
     public Scene() {
-        nodes = new ArrayList<>();
+        nodes = new LinkedList<>();
     }
 
     public Node add(Node node) {
