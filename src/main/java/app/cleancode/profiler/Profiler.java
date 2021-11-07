@@ -7,24 +7,20 @@ import java.util.Map;
 
 public class Profiler implements Runnable {
     private final Map<String, Statistics> samples = new HashMap<>();
+    private int numSamples = 0;
 
     @Override
     public void run() {
         while (true) {
             try {
-                Thread.sleep(25);
                 Thread.getAllStackTraces().forEach((thread, stackTrace) -> {
                     if (!samples.containsKey(thread.getName())) {
                         samples.put(thread.getName(), new Statistics());
                     }
                     Statistics threadStatistics = samples.get(thread.getName());
-                    System.out.println("Thread " + thread.getName());
-                    System.out.println("Stack depth: " + stackTrace.length);
                     for (StackTraceElement stackTraceElement : stackTrace) {
                         String className = stackTraceElement.getClassName();
                         String methodName = stackTraceElement.getMethodName();
-                        System.out.printf("Detected in method %s of class %s\n", methodName,
-                                className);
                         Sample sample = new Sample(className, methodName);
                         if (!threadStatistics.samples.contains(sample)) {
                             threadStatistics.samples.add(sample);
@@ -40,23 +36,27 @@ public class Profiler implements Runnable {
                         threadStatistics.blocking++;
                     }
                 });
-                samples.values().forEach(stats -> Collections.sort(stats.samples));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            numSamples++;
         }
     }
 
     public void dump() {
         System.out.println();
         System.out.println("Profiler results:");
+        System.out.printf("Recorded %d samples\n", numSamples);
         samples.forEach((thread, threadStatistics) -> {
             System.out.println("For thread: " + thread);
             System.out.printf("Spent %.2f%% actually running\n", threadStatistics.running
                     / (double) (threadStatistics.running + threadStatistics.blocking) * 100);
+            Collections.sort(threadStatistics.samples);
             Collections.reverse(threadStatistics.samples);
             for (Sample sample : threadStatistics.samples) {
-                System.out.println(sample.toString());
+                System.out.printf("%.2f%%: %s:%s\n",
+                        sample.occurrences / (double) numSamples * 100d, sample.claz,
+                        sample.method);
             }
         });
     }

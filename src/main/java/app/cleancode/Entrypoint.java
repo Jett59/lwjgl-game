@@ -28,6 +28,7 @@ public class Entrypoint implements GameLogic {
         Profiler profiler = null;
         Thread profilerThread = null;
         if (shouldProfile) {
+            System.out.println("Starting profiler");
             profiler = new Profiler();
             profilerThread = new Thread(profiler, "Profiler thread");
             profilerThread.setDaemon(true);
