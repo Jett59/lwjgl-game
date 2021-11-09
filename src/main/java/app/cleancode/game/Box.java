@@ -85,8 +85,12 @@ public class Box extends Shape {
     };
 
     public Box(float x, float y, float z, float width, float height, float depth) {
-        super(genVertices(x, y, z, width, height, depth), defaultTextureCoordinates,
-                defaultIndices);
+        this(x, y, z, width, height, depth, defaultTextureCoordinates);
+    }
+
+    public Box(float x, float y, float z, float width, float height, float depth,
+            float[] textureCoordinates) {
+        super(genVertices(x, y, z, width, height, depth), textureCoordinates, defaultIndices);
     }
 
 }

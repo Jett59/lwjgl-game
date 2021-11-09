@@ -3,6 +3,7 @@ package app.cleancode.game.block;
 import java.util.HashMap;
 import java.util.Map;
 import app.cleancode.game.Box;
+import app.cleancode.game.GrassShape;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlObject;
 import app.cleancode.gl.GlTexture;
@@ -14,14 +15,14 @@ public class Blocks {
         return blocks.get(id);
     }
 
-    private static void registerBlock(GlContext context, int id, String textureName) {
-        blocks.put(id,
-                context.addObject(
-                        new GlObject(new Box(-0.5f, -0.5f, -0.5f, 1f, 1f, 1f), context.getShaders(),
-                                new GlTexture(textureName), 0.87f /* Math.sqrt(0.5 * 0.5 * 3) */)));
+    private static void registerBlock(GlContext context, int id, float[] textureCoordinates,
+            String textureName) {
+        blocks.put(id, context.addObject(new GlObject(
+                new Box(-0.5f, -0.5f, -0.5f, 1f, 1f, 1f, textureCoordinates), context.getShaders(),
+                new GlTexture(textureName), 0.87f /* Math.sqrt(0.5 * 0.5 * 3) */)));
     }
 
     public static void initBlocks(GlContext context) {
-        registerBlock(context, BlockIds.grass, "grass");
+        registerBlock(context, BlockIds.grass, GrassShape.textureCoordinates, "grass");
     }
 }
