@@ -1,5 +1,5 @@
 package app.cleancode.game.block;
 
 public class BlockIds {
-    public static final int block = 1;
+    public static final int grass = 1;
 }

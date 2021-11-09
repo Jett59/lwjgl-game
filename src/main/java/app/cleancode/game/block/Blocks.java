@@ -22,6 +22,6 @@ public class Blocks {
     }
 
     public static void initBlocks(GlContext context) {
-        registerBlock(context, BlockIds.block, "cube");
+        registerBlock(context, BlockIds.grass, "grass");
     }
 }

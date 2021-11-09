@@ -51,7 +51,7 @@ public class Entrypoint implements GameLogic {
         for (int x = -50; x < 50; x++) {
             for (int y = 0; y < 10; y++) {
                 for (int z = -50; z < 50; z++) {
-                    scene.add(new Block(BlockIds.block, world, x, -2 - y, z));
+                    scene.add(new Block(BlockIds.grass, world, x, -2 - y, z));
                 }
             }
         }
