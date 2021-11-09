@@ -51,4 +51,8 @@ public class GlCamera {
             return matrix;
         }
     }
+
+    public boolean hasChanged() {
+        return changed;
+    }
 }

@@ -84,4 +84,8 @@ public class Node implements AutoCloseable {
     public boolean shouldRender() {
         return true;
     }
+
+    public float getBoundingRadius() {
+        return glObject.getBoundingRadius();
+    }
 }

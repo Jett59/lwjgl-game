@@ -57,6 +57,7 @@ public class GlGame {
         // Initialise the projection matrix
         projectionMatrix = new Matrix4f().perspective(fieldOfView,
                 (float) screenWidth / screenHeight, zNear, zFar);
+        context.setProjectionMatrix(projectionMatrix);
 
         ShaderProgram shaders = context.addObject(new ShaderProgram());
         shaders.bind();

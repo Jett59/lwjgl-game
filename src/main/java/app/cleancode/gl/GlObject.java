@@ -14,13 +14,16 @@ public class GlObject implements AutoCloseable {
     private final int numVertices;
     private final ShaderProgram shaderProgram;
     private final GlTexture texture;
+    private final float boundingRadius;
 
-    public GlObject(Shape shape, ShaderProgram shaderProgram, GlTexture texture) {
-        this(shape.vertices, shape.textureCoordinates, shape.indices, shaderProgram, texture);
+    public GlObject(Shape shape, ShaderProgram shaderProgram, GlTexture texture,
+            float boundingRadius) {
+        this(shape.vertices, shape.textureCoordinates, shape.indices, shaderProgram, texture,
+                boundingRadius);
     }
 
     public GlObject(float[] vertices, float[] textureCoords, int[] indices,
-            ShaderProgram shaderProgram, GlTexture texture) {
+            ShaderProgram shaderProgram, GlTexture texture, float boundingRadius) {
         if (vertices.length % 3 != 0) {
             throw new IllegalArgumentException(
                     "Length of vertices not a multiple of 3: " + vertices.length);
@@ -36,6 +39,7 @@ public class GlObject implements AutoCloseable {
         this.numVertices = indices.length;
         this.shaderProgram = shaderProgram;
         this.texture = texture;
+        this.boundingRadius = boundingRadius;
         vaoId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoId);
         vertexVboId = GL30.glGenBuffers();
@@ -77,6 +81,10 @@ public class GlObject implements AutoCloseable {
         GL30.glBindVertexArray(vaoId);
         GL30.glDrawElements(GL30.GL_TRIANGLES, numVertices, GL30.GL_UNSIGNED_INT, 0);
         GL30.glBindVertexArray(0);
+    }
+
+    public float getBoundingRadius() {
+        return boundingRadius;
     }
 
     @Override

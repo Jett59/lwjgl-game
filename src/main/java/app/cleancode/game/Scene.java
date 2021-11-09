@@ -6,9 +6,11 @@ import app.cleancode.gl.GlContext;
 
 public class Scene {
     private final List<Node> nodes;
+    private final FrustumFilter frustumFilter;
 
     public Scene() {
         nodes = new LinkedList<>();
+        frustumFilter = new FrustumFilter();
     }
 
     public Node add(Node node) {
@@ -21,8 +23,13 @@ public class Scene {
     }
 
     public void render(GlContext context) {
+        if (context.getCamera().hasChanged()) {
+            context.updateProjectionViewMatrix(context.getCamera().getMatrix());
+            frustumFilter.update(context.getProjectionViewMatrix());
+        }
         for (Node node : nodes) {
-            if (node.shouldRender()) {
+            if (node.shouldRender() && frustumFilter.shouldRender(node.getTranslateX(),
+                    node.getTranslateY(), node.getTranslateZ(), node.getBoundingRadius())) {
                 node.applyTransforms();
                 node.applyCamera(context.getCamera());
                 node.render();
