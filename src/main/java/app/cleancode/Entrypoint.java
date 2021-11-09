@@ -49,7 +49,7 @@ public class Entrypoint implements GameLogic {
     public void begin(GlContext context) { // TODO Auto-generated method stub
         Blocks.initBlocks(context);
         for (int x = -50; x < 50; x++) {
-            for (int y = 0; y < 10; y++) {
+            for (int y = 0; y < 16; y++) {
                 for (int z = -50; z < 50; z++) {
                     scene.add(new Block(BlockIds.grass, world, x, -2 - y, z));
                 }
