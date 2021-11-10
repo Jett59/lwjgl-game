@@ -7,7 +7,6 @@ import app.cleancode.game.World;
 import app.cleancode.game.block.Blocks;
 import app.cleancode.game.player.Player;
 import app.cleancode.game.terrain.TerrainGenerator;
-import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlGame;
 import app.cleancode.gl.GlfwWindow;
@@ -61,8 +60,6 @@ public class Entrypoint implements GameLogic {
     private long frames = 0;
     private long fps = 0;
 
-    private float gravitationalForce = 0;
-
     @Override
     public void update(GlContext context, GlfwWindow window) {
         frames++;
@@ -75,7 +72,6 @@ public class Entrypoint implements GameLogic {
             frames = 0;
         }
         scene.render(context);
-        GlCamera camera = context.getCamera();
         if (previousMouseX != Double.MAX_VALUE && previousMouseY != Double.MAX_VALUE) {
             double mouseX = window.getMouseX();
             double mouseY = window.getMouseY();
@@ -87,25 +83,31 @@ public class Entrypoint implements GameLogic {
         previousMouseX = window.getMouseX();
         previousMouseY = window.getMouseY();
         if (window.isKeyDown(GLFW.GLFW_KEY_W)) {
-            player.move(0, 0, -speed, world);
+            player.zVelocity = Math.min(-0.06f, -player.zVelocity - speed);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_S)) {
-            player.move(0, 0, speed, world);
+            player.zVelocity = Math.min(0.06f, player.zVelocity + speed);
+        } else {
+            player.zVelocity = 0;
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_A)) {
-            player.move(-speed, 0, 0, world);
+            player.xVelocity = Math.max(-0.06f, -player.xVelocity - speed);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_D)) {
-            player.move(speed, 0, 0, world);
+            player.xVelocity = Math.min(0.06f, player.xVelocity + speed);
+        } else {
+            player.xVelocity = 0;
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-            player.move(0, speed, 0, world);
-        } else if (window.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-            player.move(0, -speed, 0, world);
+            if (player.isTouchingGround(world, -player.yVelocity)) {
+                player.yVelocity = speed * 2.5f;
+            }
         }
-        if (!player.isTouchingGround(world)) {
-            player.move(0, -gravitationalForce, 0, world);
-            gravitationalForce += speed / 24;
+        if (!player.isTouchingGround(world, -player.yVelocity)) {
+            player.yVelocity -= speed / 24;
         } else {
-            gravitationalForce = 0;
+            if (player.yVelocity < 0) {
+                player.yVelocity = 0;
+            }
         }
+        player.move(player.xVelocity, player.yVelocity, player.zVelocity, world);
     }
 }

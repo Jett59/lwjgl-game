@@ -4,9 +4,13 @@ import app.cleancode.game.World;
 import app.cleancode.gl.GlCamera;
 
 public class Player {
+    private static final float height = 1.5f;
+
     private final GlCamera camera;
     private float x, y, z;
     private float yRotate;
+
+    public float xVelocity = 0, yVelocity = 0, zVelocity = 0;
 
     public Player(GlCamera camera) {
         this.camera = camera;
@@ -27,11 +31,17 @@ public class Player {
             newZ += (float) Math.cos(Math.toRadians(yRotate)) * deltaZ;
         }
         newY += deltaY;
-        if (!isBlockPresent(newX, newY, newZ, world)) {
+        if (!isBlockPresent(newX, y, z, world)) {
             x = newX;
+            camera.move(newX, y + height, z);
+        }
+        if (!isBlockPresent(x, newY, z, world)) {
             y = newY;
+            camera.move(x, newY + height, z);
+        }
+        if (!isBlockPresent(x, y, newZ, world)) {
             z = newZ;
-            camera.move(x, y + 1.5f, z);
+            camera.move(x, y + height, newZ);
         }
     }
 
@@ -40,7 +50,7 @@ public class Player {
         camera.rotate(deltaX, deltaY);
     }
 
-    public boolean isTouchingGround(World world) {
-        return isBlockPresent(x, y - 1, z, world);
+    public boolean isTouchingGround(World world, float distance) {
+        return isBlockPresent(x, y - distance, z, world);
     }
 }
