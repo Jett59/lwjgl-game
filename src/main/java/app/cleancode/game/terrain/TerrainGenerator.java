@@ -29,16 +29,9 @@ public class TerrainGenerator {
     }
 
     public void generateTerrain(Scene scene, World world) {
-        for (int x = -20; x < 20; x++) {
-            for (int y = 0; y < 16; y++) {
-                for (int z = -20; z < 20; z++) {
-                    scene.add(new Block(BlockIds.grass, world, x, -y, z));
-                }
-            }
-        }
-        int numHills = rand.nextInt(16) + 1;
+        int numHills = rand.nextInt(64) + 5;
         for (int i = 0; i < numHills; i++) {
-            generateHill(rand.nextInt(21) - 10, rand.nextInt(21) - 10, rand.nextInt(5) + 1,
+            generateHill(rand.nextInt(33) - 16, rand.nextInt(33) - 16, rand.nextInt(5) + 1,
                     rand.nextInt(5) + 1, world, scene);
         }
     }
