@@ -37,38 +37,6 @@ public class Box extends Shape {
         };
     }
 
-    private static float[] defaultTextureCoordinates = { // 24: one for each verticy
-            // Face 1: front
-            0, 0, // Verticy 0
-            1, 0, // Verticy 1
-            1, 1, // Verticy 2
-            0, 1, // Verticy 3
-            // Face 2: back
-            0, 0, // Verticy 4
-            1, 0, // Verticy 5
-            1, 1, // Verticy 6
-            0, 1, // Verticy 7
-            // Face 3: left
-            0, 0, // Verticy 8
-            1, 0, // Verticy 9
-            1, 1, // Verticy 10
-            0, 1, // Verticy 11
-            // Face 4: right
-            0, 0, // Verticy 12
-            1, 0, // Verticy 13
-            1, 1, // Verticy 14
-            0, 1, // Verticy 15
-            // Face 5: top
-            0, 0, // Verticy 16
-            1, 0, // Verticy 17
-            1, 1, // Verticy 18
-            0, 1, // Verticy 19
-            // Face 6: bottom
-            0, 0, // Verticy 20
-            1, 0, // Verticy 21
-            1, 1, // Verticy 22
-            0, 1, // Verticy 23
-    };
     private static final int[] defaultIndices = { // 36: 3 for each triangle
             // Face 1: front
             0, 1, 2, 2, 3, 0, // 2 triangles
@@ -83,10 +51,6 @@ public class Box extends Shape {
             // Face 6: bottom
             20, 21, 22, 22, 23, 20, // 2 triangles
     };
-
-    public Box(float x, float y, float z, float width, float height, float depth) {
-        this(x, y, z, width, height, depth, defaultTextureCoordinates);
-    }
 
     public Box(float x, float y, float z, float width, float height, float depth,
             float[] textureCoordinates) {

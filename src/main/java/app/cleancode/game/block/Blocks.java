@@ -3,7 +3,7 @@ package app.cleancode.game.block;
 import java.util.HashMap;
 import java.util.Map;
 import app.cleancode.game.Box;
-import app.cleancode.game.GrassShape;
+import app.cleancode.game.TextureCoordinates;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlObject;
 import app.cleancode.gl.GlTexture;
@@ -23,6 +23,6 @@ public class Blocks {
     }
 
     public static void initBlocks(GlContext context) {
-        registerBlock(context, BlockIds.grass, GrassShape.textureCoordinates, "grass");
+        registerBlock(context, BlockIds.grass, TextureCoordinates.topBottomSide, "grass");
     }
 }

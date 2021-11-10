@@ -48,9 +48,9 @@ public class Entrypoint implements GameLogic {
     @Override
     public void begin(GlContext context) { // TODO Auto-generated method stub
         Blocks.initBlocks(context);
-        for (int x = -50; x < 50; x++) {
+        for (int x = -16; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
-                for (int z = -50; z < 50; z++) {
+                for (int z = -16; z < 16; z++) {
                     scene.add(new Block(BlockIds.grass, world, x, -2 - y, z));
                 }
             }
