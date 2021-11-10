@@ -78,8 +78,8 @@ public class Entrypoint implements GameLogic {
             double mouseX = window.getMouseX();
             double mouseY = window.getMouseY();
             if (mouseX != previousMouseX || mouseY != previousMouseY) {
-                camera.rotate((float) ((mouseY - previousMouseY) * mouseSensitivity),
-                        (float) ((mouseX - previousMouseX) * mouseSensitivity), 0);
+                player.rotate((float) ((mouseY - previousMouseY) * mouseSensitivity),
+                        (float) ((mouseX - previousMouseX) * mouseSensitivity));
             }
         }
         previousMouseX = window.getMouseX();
