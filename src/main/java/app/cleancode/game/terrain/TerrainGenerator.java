@@ -12,13 +12,13 @@ public class TerrainGenerator {
     private void generateHill(int x, int z, int elevation, int minRadius, World world,
             Scene scene) {
         for (int currentElevation = elevation; currentElevation > 0; currentElevation--) {
-            int levelRadius = minRadius + (elevation - currentElevation);
+            int levelRadius = minRadius - (currentElevation - elevation);
             double angleIncrement = 360d / (2 * Math.PI * levelRadius);
             for (int currentRadius = levelRadius; currentRadius >= 0; currentRadius--) {
                 for (double angle = 0; angle < 360; angle += angleIncrement) {
                     double radians = Math.toRadians(angle);
-                    int blockX = (int) Math.round(Math.cos(radians) * currentRadius);
-                    int blockZ = (int) Math.round(Math.sin(radians) * currentRadius);
+                    int blockX = (int) Math.round(Math.cos(radians) * currentRadius) + x;
+                    int blockZ = (int) Math.round(Math.sin(radians) * currentRadius) + z;
                     if (world.blockAt(blockX, currentElevation, blockZ) == null) {
                         scene.add(
                                 new Block(BlockIds.grass, world, blockX, currentElevation, blockZ));
@@ -29,16 +29,16 @@ public class TerrainGenerator {
     }
 
     public void generateTerrain(Scene scene, World world) {
-        for (int x = -16; x < 16; x++) {
+        for (int x = -20; x < 20; x++) {
             for (int y = 0; y < 16; y++) {
-                for (int z = -16; z < 16; z++) {
+                for (int z = -20; z < 20; z++) {
                     scene.add(new Block(BlockIds.grass, world, x, -y, z));
                 }
             }
         }
-        int numHills = rand.nextInt(7) + 1;
+        int numHills = rand.nextInt(8) + 1;
         for (int i = 0; i < numHills; i++) {
-            generateHill(rand.nextInt(33) - 16, rand.nextInt(33) - 16, rand.nextInt(5) + 1,
+            generateHill(rand.nextInt(21) - 10, rand.nextInt(21) - 10, rand.nextInt(5) + 1,
                     rand.nextInt(5) + 1, world, scene);
         }
     }
