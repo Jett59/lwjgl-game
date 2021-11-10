@@ -28,4 +28,13 @@ public class World {
     public Block blockAt(int x, int y, int z) {
         return blocks[x + xAdjust][y + yAdjust][z + zAdjust];
     }
+
+    public int surfaceLevelOf(int x, int z) {
+        for (int y = yMax - 1 - yAdjust; y >= -yAdjust; y--) {
+            if (blockAt(x, y, z) != null) {
+                return y + 1;
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
 }
