@@ -5,6 +5,7 @@ import app.cleancode.game.GameLogic;
 import app.cleancode.game.Scene;
 import app.cleancode.game.World;
 import app.cleancode.game.block.Blocks;
+import app.cleancode.game.player.Player;
 import app.cleancode.game.terrain.TerrainGenerator;
 import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
@@ -44,11 +45,14 @@ public class Entrypoint implements GameLogic {
     private final Scene scene = new Scene();
     private final World world = new World();
     private final TerrainGenerator terrainGenerator = new TerrainGenerator();
+    private Player player;
 
     @Override
     public void begin(GlContext context) { // TODO Auto-generated method stub
         Blocks.initBlocks(context);
         terrainGenerator.generateTerrain(scene, world);
+        player = new Player(context.getCamera());
+        player.move(0, 10, 0, world);
     }
 
     private double previousMouseX = Double.MAX_VALUE, previousMouseY = Double.MAX_VALUE;
@@ -81,19 +85,19 @@ public class Entrypoint implements GameLogic {
         previousMouseX = window.getMouseX();
         previousMouseY = window.getMouseY();
         if (window.isKeyDown(GLFW.GLFW_KEY_W)) {
-            camera.move(0, 0, -speed);
+            player.move(0, 0, -speed, world);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_S)) {
-            camera.move(0, 0, speed);
+            player.move(0, 0, speed, world);
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_A)) {
-            camera.move(-speed, 0, 0);
+            player.move(-speed, 0, 0, world);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_D)) {
-            camera.move(speed, 0, 0);
+            player.move(speed, 0, 0, world);
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-            camera.move(0, speed, 0);
+            player.move(0, speed, 0, world);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
-            camera.move(0, -speed, 0);
+            player.move(0, -speed, 0, world);
         }
     }
 }

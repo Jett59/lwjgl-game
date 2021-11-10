@@ -11,7 +11,7 @@ public class TerrainGenerator {
 
     private void generateHill(int x, int z, int elevation, int minRadius, World world,
             Scene scene) {
-        for (int currentElevation = elevation; currentElevation >= 0; currentElevation--) {
+        for (int currentElevation = elevation; currentElevation > 0; currentElevation--) {
             int levelRadius = minRadius + 2 * (elevation - currentElevation);
             double angleIncrement = 360d / (2 * Math.PI * levelRadius);
             for (double angle = 0; angle < 360; angle += angleIncrement) {
