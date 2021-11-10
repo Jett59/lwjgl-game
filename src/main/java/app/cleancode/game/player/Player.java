@@ -12,6 +12,10 @@ public class Player {
         this.camera = camera;
     }
 
+    private boolean isBlockPresent(float x, float y, float z, World world) {
+        return world.blockAt((int) Math.round(x), (int) Math.round(y), (int) Math.round(z)) != null;
+    }
+
     public void move(float deltaX, float deltaY, float deltaZ, World world) {
         float newX = x, newY = y, newZ = z;
         if (deltaX != 0) {
@@ -23,8 +27,7 @@ public class Player {
             newZ += (float) Math.cos(Math.toRadians(yRotate)) * deltaZ;
         }
         newY += deltaY;
-        if (world.blockAt((int) Math.round(newX), (int) Math.round(newY),
-                (int) Math.round(newZ)) == null) {
+        if (!isBlockPresent(newX, newY, newZ, world)) {
             x = newX;
             y = newY;
             z = newZ;
@@ -35,5 +38,9 @@ public class Player {
     public void rotate(float deltaX, float deltaY) {
         yRotate += deltaY;
         camera.rotate(deltaX, deltaY);
+    }
+
+    public boolean isTouchingGround(World world) {
+        return isBlockPresent(x, y - 1, z, world);
     }
 }

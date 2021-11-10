@@ -61,6 +61,8 @@ public class Entrypoint implements GameLogic {
     private long frames = 0;
     private long fps = 0;
 
+    private float gravitationalForce = 0;
+
     @Override
     public void update(GlContext context, GlfwWindow window) {
         frames++;
@@ -98,6 +100,12 @@ public class Entrypoint implements GameLogic {
             player.move(0, speed, 0, world);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
             player.move(0, -speed, 0, world);
+        }
+        if (!player.isTouchingGround(world)) {
+            player.move(0, -gravitationalForce, 0, world);
+            gravitationalForce += speed / 24;
+        } else {
+            gravitationalForce = 0;
         }
     }
 }
