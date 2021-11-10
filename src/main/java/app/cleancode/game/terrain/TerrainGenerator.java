@@ -12,14 +12,17 @@ public class TerrainGenerator {
     private void generateHill(int x, int z, int elevation, int minRadius, World world,
             Scene scene) {
         for (int currentElevation = elevation; currentElevation > 0; currentElevation--) {
-            int levelRadius = minRadius + 2 * (elevation - currentElevation);
+            int levelRadius = minRadius + (elevation - currentElevation);
             double angleIncrement = 360d / (2 * Math.PI * levelRadius);
-            for (double angle = 0; angle < 360; angle += angleIncrement) {
-                double radians = Math.toRadians(angle);
-                int blockX = (int) Math.round(Math.cos(radians) * levelRadius);
-                int blockZ = (int) Math.round(Math.sin(radians) * levelRadius);
-                if (world.blockAt(blockX, currentElevation, blockZ) == null) {
-                    scene.add(new Block(BlockIds.grass, world, blockX, currentElevation, blockZ));
+            for (int currentRadius = levelRadius; currentRadius >= 0; currentRadius--) {
+                for (double angle = 0; angle < 360; angle += angleIncrement) {
+                    double radians = Math.toRadians(angle);
+                    int blockX = (int) Math.round(Math.cos(radians) * currentRadius);
+                    int blockZ = (int) Math.round(Math.sin(radians) * currentRadius);
+                    if (world.blockAt(blockX, currentElevation, blockZ) == null) {
+                        scene.add(
+                                new Block(BlockIds.grass, world, blockX, currentElevation, blockZ));
+                    }
                 }
             }
         }
