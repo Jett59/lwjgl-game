@@ -4,9 +4,8 @@ import org.lwjgl.glfw.GLFW;
 import app.cleancode.game.GameLogic;
 import app.cleancode.game.Scene;
 import app.cleancode.game.World;
-import app.cleancode.game.block.Block;
-import app.cleancode.game.block.BlockIds;
 import app.cleancode.game.block.Blocks;
+import app.cleancode.game.terrain.TerrainGenerator;
 import app.cleancode.gl.GlCamera;
 import app.cleancode.gl.GlContext;
 import app.cleancode.gl.GlGame;
@@ -48,13 +47,7 @@ public class Entrypoint implements GameLogic {
     @Override
     public void begin(GlContext context) { // TODO Auto-generated method stub
         Blocks.initBlocks(context);
-        for (int x = -16; x < 16; x++) {
-            for (int y = 0; y < 16; y++) {
-                for (int z = -16; z < 16; z++) {
-                    scene.add(new Block(BlockIds.grass, world, x, -2 - y, z));
-                }
-            }
-        }
+        TerrainGenerator.generateTerrain(scene, world);
     }
 
     private double previousMouseX = Double.MAX_VALUE, previousMouseY = Double.MAX_VALUE;
