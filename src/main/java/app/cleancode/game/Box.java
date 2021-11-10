@@ -16,14 +16,14 @@ public class Box extends Shape {
                 x, y + height, z, // Verticy 7
                 // Face 3: left
                 x, y, z, // Verticy 8
-                x, y + height, z, // Verticy 9
+                x, y, z + depth, // Verticy 9
                 x, y + height, z + depth, // Verticy 10
-                x, y, z + depth, // Verticy 11
+                x, y + height, z, // Verticy 11
                 // Face 4: right
                 x + width, y, z, // Verticy 12
-                x + width, y + height, z, // Verticy 13
+                x + width, y, z + depth, // Verticy 13
                 x + width, y + height, z + depth, // Verticy 14
-                x + width, y, z + depth, // Verticy 15
+                x + width, y + height, z, // Verticy 15
                 // Face 5: top
                 x, y + height, z, // Verticy 16
                 x + width, y + height, z, // Verticy 17
