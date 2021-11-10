@@ -28,7 +28,7 @@ public class Player {
             x = newX;
             y = newY;
             z = newZ;
-            camera.move(x, y, z);
+            camera.move(x, y + 1.5f, z);
         }
     }
 
