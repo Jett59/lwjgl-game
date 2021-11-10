@@ -43,11 +43,12 @@ public class Entrypoint implements GameLogic {
 
     private final Scene scene = new Scene();
     private final World world = new World();
+    private final TerrainGenerator terrainGenerator = new TerrainGenerator();
 
     @Override
     public void begin(GlContext context) { // TODO Auto-generated method stub
         Blocks.initBlocks(context);
-        TerrainGenerator.generateTerrain(scene, world);
+        terrainGenerator.generateTerrain(scene, world);
     }
 
     private double previousMouseX = Double.MAX_VALUE, previousMouseY = Double.MAX_VALUE;
