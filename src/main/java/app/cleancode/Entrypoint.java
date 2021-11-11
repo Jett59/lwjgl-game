@@ -51,7 +51,17 @@ public class Entrypoint implements GameLogic {
         Blocks.initBlocks(context);
         terrainGenerator.generateTerrain(scene, world);
         player = new Player(context.getCamera());
-        player.move(0, world.surfaceLevelOf(0, 0), 0, world);
+        int initialPlayerX, initialPlayerY, initialPlayerZ;
+        findPlayerX: for (initialPlayerX = -128; initialPlayerX < 128; initialPlayerX++) {
+            for (initialPlayerZ = -128; initialPlayerZ < 128; initialPlayerZ++) {
+                System.out.printf("%dx%d\n", initialPlayerX, initialPlayerZ);
+                if ((initialPlayerY = world.surfaceLevelOf(initialPlayerX,
+                        initialPlayerZ)) != Integer.MIN_VALUE) {
+                    player.move(initialPlayerX, initialPlayerY, initialPlayerZ, world);
+                    break findPlayerX;
+                }
+            }
+        }
     }
 
     private double previousMouseX = Double.MAX_VALUE, previousMouseY = Double.MAX_VALUE;

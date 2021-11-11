@@ -13,7 +13,7 @@ public class TerrainGenerator {
             Scene scene) {
         for (int currentElevation = elevation; currentElevation > 0; currentElevation--) {
             int levelRadius = minRadius - (currentElevation - elevation);
-            double angleIncrement = 360d / (2 * Math.PI * levelRadius);
+            double angleIncrement = 360d / (2 * Math.PI * levelRadius) / 2;
             for (int currentRadius = levelRadius; currentRadius >= 0; currentRadius--) {
                 for (double angle = 0; angle < 360; angle += angleIncrement) {
                     double radians = Math.toRadians(angle);
@@ -29,9 +29,9 @@ public class TerrainGenerator {
     }
 
     public void generateTerrain(Scene scene, World world) {
-        int numHills = rand.nextInt(64) + 5;
+        int numHills = rand.nextInt(16) + 5;
         for (int i = 0; i < numHills; i++) {
-            generateHill(rand.nextInt(33) - 16, rand.nextInt(33) - 16, rand.nextInt(16) + 1,
+            generateHill(rand.nextInt(96) - 16, rand.nextInt(96) - 16, rand.nextInt(16) + 1,
                     rand.nextInt(15) + 1, world, scene);
         }
     }

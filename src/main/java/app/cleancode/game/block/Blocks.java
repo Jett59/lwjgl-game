@@ -23,6 +23,7 @@ public class Blocks {
     }
 
     public static void initBlocks(GlContext context) {
+        registerBlock(context, BlockIds.barrier, TextureCoordinates.faces, "empty");
         registerBlock(context, BlockIds.grass, TextureCoordinates.topBottomSide, "grass");
     }
 }
