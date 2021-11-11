@@ -107,9 +107,9 @@ public class Entrypoint implements GameLogic {
             player.xVelocity = 0;
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-            if (player.isTouchingGround(world, -player.yVelocity)) {
-                player.yVelocity = speed * 2.5f;
-            }
+            // if (player.isTouchingGround(world, -player.yVelocity)) {
+            player.yVelocity = speed * 2.5f;
+            // }
         }
         if (!player.isTouchingGround(world, -player.yVelocity)) {
             player.yVelocity -= speed / 24;
