@@ -13,7 +13,8 @@ import app.cleancode.gl.GlfwWindow;
 import app.cleancode.profiler.Profiler;
 
 public class Entrypoint implements GameLogic {
-    private static final float speed = 0.04f;
+    private static final float speed = 0.02f;
+    private static final float maxSpeed = 0.1f;
     private static final double mouseSensitivity = 0.1;
 
     @SuppressWarnings("deprecation")
@@ -93,16 +94,16 @@ public class Entrypoint implements GameLogic {
         previousMouseX = window.getMouseX();
         previousMouseY = window.getMouseY();
         if (window.isKeyDown(GLFW.GLFW_KEY_W)) {
-            player.zVelocity = Math.min(-0.06f, -player.zVelocity - speed);
+            player.zVelocity = Math.min(-maxSpeed, player.zVelocity - speed);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_S)) {
-            player.zVelocity = Math.min(0.06f, player.zVelocity + speed);
+            player.zVelocity = Math.min(maxSpeed, player.zVelocity + speed);
         } else {
             player.zVelocity = 0;
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_A)) {
-            player.xVelocity = Math.max(-0.06f, -player.xVelocity - speed);
+            player.xVelocity = Math.max(-maxSpeed, player.xVelocity - speed);
         } else if (window.isKeyDown(GLFW.GLFW_KEY_D)) {
-            player.xVelocity = Math.min(0.06f, player.xVelocity + speed);
+            player.xVelocity = Math.min(maxSpeed, player.xVelocity + speed);
         } else {
             player.xVelocity = 0;
         }

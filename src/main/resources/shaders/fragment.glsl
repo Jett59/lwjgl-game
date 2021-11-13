@@ -7,6 +7,6 @@ uniform sampler2D textureUnit;
 
 void main() {
     vec4 color = texture(textureUnit, outTextureCoord);
-    color*=color;
+    //color*=color; // Make it more vibrant
     fragColor = color;
 }

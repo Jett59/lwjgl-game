@@ -49,6 +49,7 @@ public class GlGame {
         GL.createCapabilities();
         GL30.glClearColor(0.5294f, 0.8078f, 0.9216f, 0.0f);
         GL30.glEnable(GL30.GL_DEPTH_TEST);
+        GL30.glEnable(GL30.GL_CULL_FACE);
     }
 
     private Matrix4f projectionMatrix;
