@@ -13,7 +13,7 @@ import app.cleancode.gl.GlfwWindow;
 import app.cleancode.profiler.Profiler;
 
 public class Entrypoint implements GameLogic {
-    private static final float speed = 0.02f;
+    private static final float speed = 0.04f;
     private static final double mouseSensitivity = 0.1;
 
     @SuppressWarnings("deprecation")
@@ -107,11 +107,11 @@ public class Entrypoint implements GameLogic {
             player.xVelocity = 0;
         }
         if (window.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
-            // if (player.isTouchingGround(world, -player.yVelocity)) {
-            player.yVelocity = speed * 2.5f;
-            // }
+            if (player.isTouchingGround(world, -player.yVelocity)) {
+                player.yVelocity = speed * 2.5f;
+            }
         }
-        if (!player.isTouchingGround(world, -player.yVelocity)) {
+        if (player.yVelocity > 0 || !player.isTouchingGround(world, -player.yVelocity)) {
             player.yVelocity -= speed / 24;
         } else {
             if (player.yVelocity < 0) {

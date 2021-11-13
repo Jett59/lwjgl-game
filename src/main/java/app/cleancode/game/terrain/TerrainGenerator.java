@@ -29,9 +29,9 @@ public class TerrainGenerator {
     }
 
     public void generateTerrain(Scene scene, World world) {
-        int numHills = rand.nextInt(16) + 2;
+        int numHills = rand.nextInt(32) + 2;
         for (int i = 0; i < numHills; i++) {
-            generateHill(rand.nextInt(96) - 16, rand.nextInt(96) - 16, rand.nextInt(5) + 1,
+            generateHill(rand.nextInt(256) - 128, rand.nextInt(256) - 128, rand.nextInt(5) + 1,
                     rand.nextInt(15) + 1, world, scene);
         }
     }
