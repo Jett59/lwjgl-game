@@ -76,7 +76,7 @@ public class GlObject implements AutoCloseable {
 
     public void render(GlTransformer transformer) {
         shaderProgram.setUniform("transformationMatrix", transformer.getMatrix());
-        shaderProgram.setUniform("textureUnit", 0);;
+        shaderProgram.setUniform("textureUnit", 0);
         texture.bind();
         GL30.glBindVertexArray(vaoId);
         GL30.glDrawElements(GL30.GL_TRIANGLES, numVertices, GL30.GL_UNSIGNED_INT, 0);
